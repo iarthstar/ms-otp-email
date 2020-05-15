@@ -5,6 +5,8 @@ Generate and Verify OTPs using Email
 # Links
 
 * Production : https://ias-ms-otp.herokuapp.com
+* Staging : https://stage-ias-ms-otp.herokuapp.com
+
 
 ## APIs
 
@@ -42,4 +44,5 @@ $ nodemon
 ## Deployment Guide
 NOTE : Hosted using [Heroku](https://heroku.com), Continuous Deployment using it.
 
+  * staging -> https://stage-ias-ms-otp.herokuapp.com
   * master -> https://ias-ms-otp.herokuapp.com

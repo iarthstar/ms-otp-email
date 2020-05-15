@@ -1,6 +1,7 @@
 const utils = require('../../../utils');
 const { get } = require('lodash');
 const { METHOD, POST, GET, PUT, PATCH, DELETE } = require('../../constants');
+const { throwError } = require('../../utils');
 const G = require('../../../globals');
 const moment = require('moment');
 
@@ -15,7 +16,10 @@ const generate = async (method, req, res) => {
 
     case METHOD[POST]: {
       const email = get(req.body, 'email');
-      if (!Boolean(email)) { throw "Email missing"; }
+      if (!Boolean(email)) throwError("Email missing");
+
+      const isEmailValid = /^[\w!#$%&'*+/=?`{|}~^-]+(?:\.[\w!#$%&'*+/=?`{|}~^-]+)*@(?:[A-Z0-9-]+\.)+[A-Z]{2,6}$/.test(email);
+      if (!isEmailValid) throwError("Invalid Email");
 
       const REDIS_KEY = `OTP_EMAIL_API:EMAIL:${email}`;
       let ret = await G.REDIS.get(REDIS_KEY);
@@ -29,7 +33,7 @@ const generate = async (method, req, res) => {
       await G.REDIS.set(REDIS_KEY_GENERATED_OTPS, JSON.stringify(generated_otps));
       await G.REDIS.set(REDIS_KEY, String(otp), 'EX', otp_expiry_duration);
 
-      
+
       let email_options = {
         from: 'Micro Service OTP Email <ias.nodemailer@gmail.com>',
         to: email,
@@ -43,13 +47,13 @@ const generate = async (method, req, res) => {
       } catch (err) {
 
         await G.REDIS.del(REDIS_KEY);
-        
+
         const generated_otps = await G.REDIS.get(REDIS_KEY_GENERATED_OTPS);
         delete generated_otps[otp];
-        
+
         await G.REDIS.set(REDIS_KEY_GENERATED_OTPS, JSON.stringify(generated_otps));
 
-        throw "Error sending OTP mail...";
+        throwError("Error sending OTP mail...");
       }
 
     }; break;
