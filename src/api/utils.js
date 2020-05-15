@@ -1,6 +1,11 @@
 const utils = require("./../utils");
+
+const { get } = require('lodash');
+
 const G = require('./../globals');
 const { METHOD, POST, GET, PUT, PATCH, DELETE } = require('./constants');
+
+const throwError = (message, status = 400) => { throw { name: 'CustomError', status, message } };
 
 const perform = (method, func) => async (req, res) => {
   const { url, method: met, body } = req;
@@ -11,7 +16,11 @@ const perform = (method, func) => async (req, res) => {
     res.send(ret);
   } catch (err) {
     utils.error(err);
-    return res.json({ error: true, error_message: String(err) || "Something went wrong..." }).status(500);
+    const { name, message } = err;
+
+    return name === 'CustomError'
+      ? res.status(get(err, 'status', 404)).json({ success: false, error_message: message || "Something went wrong..." })
+      : res.status(500).json({ success: false, error_message: message || "Something went wrong..." })
   }
 }
 
@@ -47,6 +56,7 @@ const oneMoreRoute = (method, path, func) => {
 };
 
 module.exports = {
+  throwError,
   MIDDLE___: (str, eval) => oneMoreRoute('MIDDLE', str[0].trim(), eval),
   POST_____: (str, eval) => oneMoreRoute(METHOD[POST], str[0].trim(), eval),
   GET______: (str, eval) => oneMoreRoute(METHOD[GET], str[0].trim(), eval),

@@ -29,19 +29,14 @@ colors.setTheme({
  * @param {...any} args arguments to log
  */
 function log(type = "error", header = "", ...args) {
-  args = args.map(elem => {
-    if (typeof elem == 'object') {
-      return JSON.stringify(elem);
-    } else {
-      return elem[type];
-    }
-  });
+  args = args.map(elem => typeof elem == 'object' ? elem : elem[type]);
+
   switch (type) {
     case 'log'    : console.log(`[${appName.toLowerCase()}]`.app, ...args); break;
     case 'success': console.log(`[${appName.toLowerCase()}]`.app, ...args); break;
-    case 'error'  : console.error(`[${appName.toLowerCase()}]`.app, ...args); break;
+    case 'error'  : console.error(`[${appName.toLowerCase()}]`.app, `!! !! !! !! ${'-'.repeat(9)}-->`.error, ...args); break;
     case 'warn'   : console.warn(`[${appName.toLowerCase()}]`.app, ...args); break;
-    case 'info'   : console.info(`[${appName.toLowerCase()}]`.app, header.toUpperCase().info, "------->", ...args);
+    case 'info'   : console.info(`[${appName.toLowerCase()}]`.app, header.toUpperCase().info, `${'-'.repeat(20 - header.length)}-->`, ...args);
                     console.info(`[${appName.toLowerCase()}]`.app, Date()); break;
     default: console.log(`[${appName.toLowerCase()}]`.app, text.log, ...args); break;
   }
