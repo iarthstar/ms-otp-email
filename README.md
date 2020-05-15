@@ -2,13 +2,17 @@
 
 Generate and Verify OTPs using Email
 
+# Links
+
+* Production : https://ias-ms-otp.herokuapp.com
+
 ## APIs
 
 #### Base URL
 
 | KEY  |              VALUE               |
 | ---- | -------------------------------- |
-| HOST | https://ias-ms-otp.herokuapp.com |
+| HOST | Environment Link |
 | API  | /otp_email_api                   |
 
 #### Endpoints
@@ -34,3 +38,8 @@ $ yarn install
 ```bash
 $ nodemon
 ```
+
+## Deployment Guide
+NOTE : Hosted using [Heroku](https://heroku.com), Continuous Deployment using it.
+
+  * master -> https://ias-ms-otp.herokuapp.com
