@@ -3,7 +3,7 @@ const { METHOD, POST, GET, PUT, PATCH, DELETE } = require('../../constants');
 const { throwError } = require('../../utils');
 const G = require('../../../globals');
 
-const { REDIS_KEY_GENERATED_OTPS } = require('../../../constants');
+const { REDIS_KEY_GENERATED_OTPS, REGEX } = require('../../../constants');
 
 const verify = async (method, req, res) => {
 
@@ -16,7 +16,7 @@ const verify = async (method, req, res) => {
       const email = get(req.body, 'email') || null;
       if (!Boolean(email)) throwError("Email missing");
 
-      const isEmailValid = /^[\w!#$%&'*+/=?`{|}~^-]+(?:\.[\w!#$%&'*+/=?`{|}~^-]+)*@(?:[A-Z0-9-]+\.)+[A-Z]{2,6}$/.test(email);
+      const isEmailValid = REGEX.EMAIL.test(email);
       if (!isEmailValid) throwError("Invalid Email");
 
       const REDIS_KEY = `OTP_EMAIL_API:EMAIL:${email}`;

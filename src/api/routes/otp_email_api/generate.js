@@ -5,7 +5,7 @@ const { throwError } = require('../../utils');
 const G = require('../../../globals');
 const moment = require('moment');
 
-const { REDIS_KEY_GENERATED_OTPS, OTP_DIGITS_LENGTH } = require('../../../constants');
+const { REDIS_KEY_GENERATED_OTPS, OTP_DIGITS_LENGTH, REGEX } = require('../../../constants');
 
 const { service: { otp_expiry_duration } } = require('./../../../config');
 
@@ -18,7 +18,7 @@ const generate = async (method, req, res) => {
       const email = get(req.body, 'email');
       if (!Boolean(email)) throwError("Email missing");
 
-      const isEmailValid = /^[\w!#$%&'*+/=?`{|}~^-]+(?:\.[\w!#$%&'*+/=?`{|}~^-]+)*@(?:[A-Z0-9-]+\.)+[A-Z]{2,6}$/.test(email);
+      const isEmailValid = REGEX.EMAIL.test(email);
       if (!isEmailValid) throwError("Invalid Email");
 
       const REDIS_KEY = `OTP_EMAIL_API:EMAIL:${email}`;
@@ -67,11 +67,11 @@ const generate = async (method, req, res) => {
 const sendMail = (message) => new Promise((resolve, reject) => {
   G.MAILER.sendMail(message, function (error, info) {
     if (error) {
-      console.log("error is " + error);
+      utils.log("error is " + error);
       reject(false);
     }
     else {
-      console.log('Email sent: ' + info.response);
+      utils.log('Email sent: ' + info.response);
       resolve(true);
     }
   });
