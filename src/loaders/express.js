@@ -21,8 +21,7 @@ const G = require('./../globals');
 module.exports = async () => {
 
   G.EXPRESS = await express()
-    // .get('/', (_req, res) => res.sendFile("./index.html", { root: __dirname.replace(/\/src\/loaders/, "") }))
-    .get('/', (_req, res) => res.redirect('https://documenter.getpostman.com/view/2632863/RWgp1ewx'))
+    .get('/', (_req, res) => res.redirect('https://documenter.getpostman.com/view/2632863/SzmjzvXp'))
     .get('/status', (_req, res) => res.status(200).end())
     .head('/status', (_req, res) => res.status(200).end())
     .enable('trust proxy')
