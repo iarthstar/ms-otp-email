@@ -18,9 +18,9 @@ module.exports = async () => {
   const { nodemailer: { email, pass } } = config;
 
   G.MAILER = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 465,
-    secure: true,
+    host: "smtp.ethereal.email",
+    port: 587,
+    secure: false,
     auth: {
       user: email,
       pass: pass
