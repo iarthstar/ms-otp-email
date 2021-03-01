@@ -15,12 +15,12 @@ const G = require('./../globals');
 
 module.exports = async () => {
 
-  const { nodemailer: { email, pass } } = config;
+  const { nodemailer: { email, pass, host, port, secure } } = config;
 
   G.MAILER = nodemailer.createTransport({
-    host: "smtp.ethereal.email",
-    port: 587,
-    secure: false,
+    host,
+    port,
+    secure,
     auth: {
       user: email,
       pass: pass

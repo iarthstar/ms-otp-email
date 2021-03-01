@@ -30,6 +30,9 @@ module.exports = {
   nodemailer: {
     email: process.env.NODEMAILER_EMAIL,
     pass: process.env.NODEMAILER_PASS,
+    host: process.env.NODEMAILER_HOST,
+    port: process.env.NODEMAILER_PORT,
+    secure: process.env.NODEMAILER_SECURE,
   },
   server: {
     PORT: process.env.PORT || 8080,
